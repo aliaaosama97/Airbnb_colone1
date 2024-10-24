@@ -12,9 +12,6 @@ axios.defaults.baseURL = 'http://localhost:4000';
 
 function App() {
 
-  
-  
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
