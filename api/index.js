@@ -5,6 +5,8 @@ const { default: mongoose } = require('mongoose');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const bcryptSalt = bcrypt.genSaltSync(10);
+const jwt = require('jsonwebtoken');
+const jwtSecret = 'fasefraw4r5r3wq45wdfgw34twdfg';
 
 require('dotenv').config()
 
