@@ -4,6 +4,7 @@ const cors = require('cors');
 const { default: mongoose } = require('mongoose');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
+const cookieParser = require('cookie-parser');
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
 const jwtSecret = 'fasefraw4r5r3wq45wdfgw34twdfg';
@@ -14,7 +15,7 @@ require('dotenv').config()
 ///1h90T96MbNGPS8mL booking
 
 app.use(express.json());
-
+app.use(cookieParser());
 app.use(cors({
   credentials: true,
   origin: 'http://127.0.0.1:5173',
@@ -61,6 +62,20 @@ app.post('/login', async (req,res) => {
     }
   } else {
     res.json('not found');
+  }
+});
+
+app.get('/api/profile', (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {token} = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const {name,email,_id} = await User.findById(userData.id);
+      res.json({name,email,_id});
+    });
+  } else {
+    res.json(null);
   }
 });
 
