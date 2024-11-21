@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
 const { default: mongoose } = require('mongoose');
 const User = require('./models/User');
@@ -9,17 +8,31 @@ const bcryptSalt = bcrypt.genSaltSync(10);
 const jwt = require('jsonwebtoken');
 const jwtSecret = 'fasefraw4r5r3wq45wdfgw34twdfg';
 
-require('dotenv').config()
-
+require('dotenv').config();
+const app = express();
 
 ///1h90T96MbNGPS8mL booking
+const allowedOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
 
 app.use(express.json());
 app.use(cookieParser());
+//// errror solution 
 app.use(cors({
+  origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  credentials: true,
+}));
+// past code of the error 
+/*app.use(cors({
   credentials: true,
   origin: 'http://127.0.0.1:5173',
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));*/
 
 
 mongoose.connect(process.env.MONGO_URL);
@@ -65,7 +78,7 @@ app.post('/login', async (req,res) => {
   }
 });
 
-app.get('/api/profile', (req,res) => {
+app.get('/profile', (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {token} = req.cookies;
   if (token) {
@@ -78,5 +91,10 @@ app.get('/api/profile', (req,res) => {
     res.json(null);
   }
 });
+
+app.post('/logout', (req,res) => {
+  res.cookie('token', '').json(true);
+});
+
 
 app.listen(4000);
