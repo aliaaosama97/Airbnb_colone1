@@ -57,7 +57,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req,res) => {
-  //mongoose.connect(process.env.MONGO_URL);
+  mongoose.connect(process.env.MONGO_URL);
   const {email,password} = req.body;
   const userDoc = await User.findOne({email});
   if (userDoc) {
@@ -65,8 +65,7 @@ app.post('/login', async (req,res) => {
     if (passOk) {
       jwt.sign({
         email:userDoc.email,
-        id:userDoc._id,
-        name:userDoc.name
+        id:userDoc._id
       }, jwtSecret, {}, (err,token) => {
         if (err) throw err;
         res.cookie('token', token).json(userDoc);
