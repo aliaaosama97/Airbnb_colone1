@@ -3,6 +3,8 @@ import axios from "axios";
 import {useContext, useState} from "react";
 import { UserContext } from "../UserContext";
 
+axios.defaults.withCredentials = true;
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,7 +14,7 @@ export default function LoginPage() {
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
     try {
-      const data = await axios.post('/login', {email,password});
+      const data = await axios.post('http://localhost:4000/login', {email,password});
       setUser(data);
       alert('Login successful');
       setRedirect(true);
