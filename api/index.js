@@ -110,6 +110,15 @@ app.post('/api/upload-by-link', async (req,res) => {
   res.json(url);
 });
 
-
+const photosMiddleware = multer({dest:'/tmp'});
+app.post('/api/upload', photosMiddleware.array('photos', 100), async (req,res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const {path,originalname,mimetype} = req.files[i];
+    const url = await uploadToS3(path, originalname, mimetype);
+    uploadedFiles.push(url);
+  }
+  res.json(uploadedFiles);
+});
 
 app.listen(4000);
