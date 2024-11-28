@@ -1,17 +1,23 @@
 const express = require('express');
 const cors = require('cors');
-const { default: mongoose } = require('mongoose');
-const User = require('./models/User');
+const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('./models/User.js');
+const Place = require('./models/Place.js');
+const Booking = require('./models/Booking.js');
 const cookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
-const bcryptSalt = bcrypt.genSaltSync(10);
 const multer = require('multer');
-const jwt = require('jsonwebtoken');
-const jwtSecret = 'fasefraw4r5r3wq45wdfgw34twdfg';
+const fs = require('fs');
+const mime = require('mime-types');
+
 
 require('dotenv').config();
 const app = express();
+
+const bcryptSalt = bcrypt.genSaltSync(10);
+const jwtSecret = 'fasefraw4r5r3wq45wdfgw34twdfg';
 
 ///1h90T96MbNGPS8mL booking
 const allowedOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
