@@ -14,7 +14,7 @@ export default function LoginPage() {
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
     try {
-      const data = await axios.post('http://localhost:4000/login', {email,password});
+      const data = await axios.post('/login', {email,password});
       setUser(data.data);
       alert('Login successful');
       setRedirect(true);
