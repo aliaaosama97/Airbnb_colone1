@@ -12,7 +12,7 @@ export default function PlacePage() {
     if (!id) {
       return;
     }
-    axios.get(`/places/${id}`).then(response => {
+    axios.get(`http://127.0.0.1:4000/places/${id}`).then(response => {
       setPlace(response.data);
     });
   }, [id]);

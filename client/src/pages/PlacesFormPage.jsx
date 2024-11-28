@@ -22,7 +22,7 @@ export default function PlacesFormPage() {
     if (!id) {
       return;
     }
-    axios.get('/places/'+id).then(response => {
+    axios.get('http://127.0.0.1:4000/places/'+id).then(response => {
        const {data} = response;
        setTitle(data.title);
        setAddress(data.address);
